@@ -1,60 +1,93 @@
 <template>
-  <v-app>
+  <v-app id="inspire">
+    <v-navigation-drawer v-model="drawer" app>
+      <v-list dense>
+        <v-list-item
+          color="indigo"
+          link
+          v-for="link of links"
+          :key="link.title"
+          :to="link.url"
+        >
+          <v-list-item-action>
+            <v-icon color="indigo">{{link.icon}}</v-icon>
+          </v-list-item-action>
+          <v-list-item-title>{{link.title}}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
     <v-app-bar
       app
-      color="primary"
+      color="indigo"
       dark
     >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
+      <v-app-bar-nav-icon
+        @click.stop="drawer = !drawer"
+        class="hidden-md-and-up"
+      />
+      <v-toolbar-title>Application</v-toolbar-title>
+      <v-spacer/>
+      <div class="hidden-sm-and-down">
+        <v-btn
+          style="margin-left: 20px"
+          link
+          color="indigo darken-4"
+          v-for="link in links"
+          :key="link.title"
+          :to="link.url"
+        >
+          <v-icon left>{{link.icon}}</v-icon>
+          {{link.title}}
+        </v-btn>
       </div>
 
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
     </v-app-bar>
 
-    <v-content>
-      <HelloWorld/>
-    </v-content>
+    <v-main>
+      <router-view></router-view>
+    </v-main>
+    <v-footer
+      color="indigo"
+      app
+      dark
+    >
+      <span>&copy; 2020 Artem Pavliuk</span>
+    </v-footer>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
-
 export default {
-  name: 'App',
-
-  components: {
-    HelloWorld,
-  },
-
   data: () => ({
-    //
+    drawer: false,
+    links: [
+      {
+        title: 'Login',
+        icon: 'mdi-account',
+        url: '/login',
+      },
+      {
+        title: 'Registration',
+        icon: 'mdi-account-plus',
+        url: '/registration',
+      },
+      {
+        title: 'Orders',
+        icon: 'mdi-bookmark-outline',
+        url: '/orders',
+      },
+      {
+        title: 'New ad',
+        icon: 'mdi-plus-circle',
+        url: '/new',
+      },
+      {
+        title: 'My ads',
+        icon: 'mdi-playlist-check',
+        url: '/list',
+      },
+    ],
   }),
 };
 </script>
