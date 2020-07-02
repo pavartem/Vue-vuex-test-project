@@ -41,7 +41,8 @@
             <v-btn
               class="primary"
               @click="createAd"
-              :disabled="!valid"
+              :loading="loading"
+              :disabled="!valid || loading"
             >Create ad</v-btn>
           </v-flex>
         </v-layout>
@@ -59,6 +60,11 @@ export default {
     promo: false,
     valid: false,
   }),
+  computed: {
+    loading() {
+      return this.$store.getters.loading;
+    },
+  },
   methods: {
     createAd() {
       if (this.$refs.form.validate()) {
@@ -66,8 +72,13 @@ export default {
           title: this.title,
           description: this.description,
           promo: this.promo,
+          imageSrc: 'https://jetruby.com/ru/blog/wp-content/uploads/2017/08/vue.js-e1503668330344.png',
         };
-        console.log(ad);
+        this.$store.dispatch('createAd', ad)
+          .then(() => {
+            this.$router.push('/list');
+          })
+          .catch(() => {});
       }
     },
   },

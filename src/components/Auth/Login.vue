@@ -37,7 +37,6 @@
                 name="password"
                 prepend-icon="mdi-lock"
                 :rules="passwordRules"
-                :counter="6"
                 type="password"
                 v-model="password"
               ></v-text-field>
@@ -50,7 +49,8 @@
               large
               class="login-btn"
               @click="onSubmit"
-              :disabled="!valid"
+              :loading="loading"
+              :disabled="!valid || loading"
             >
               Login
             </v-btn>
@@ -74,9 +74,14 @@ export default {
     ],
     passwordRules: [
       (v) => !!v || 'Password is required',
-      (v) => v.length <= 6 || 'Password must be less than 6 characters',
+      (v) => v.length > 6 || 'Password must be less than 6 characters',
     ],
   }),
+  computed: {
+    loading() {
+      return this.$store.getters.loading;
+    },
+  },
   methods: {
     onSubmit() {
       if (this.$refs.form.validate()) {
@@ -84,9 +89,18 @@ export default {
           email: this.email,
           password: this.password,
         };
-        console.log(user);
+        this.$store.dispatch('loginUser', user)
+          .then(() => {
+            this.$router.push('/');
+          })
+          .catch(() => {});
       }
     },
+  },
+  created() {
+    if (this.$route.query.loginError) {
+      this.$store.dispatch('setError', 'Please log in to access this page');
+    }
   },
 };
 </script>

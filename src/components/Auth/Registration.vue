@@ -36,7 +36,6 @@
                 name="password"
                 prepend-icon="mdi-lock"
                 :rules="passwordRules"
-                :counter="6"
                 type="password"
                 v-model="password"
               ></v-text-field>
@@ -45,7 +44,6 @@
                 name="confirm-password"
                 prepend-icon="mdi-lock"
                 :rules="confirmPasswordRules"
-                :counter="6"
                 type="password"
                 v-model="confirmPassword"
               ></v-text-field>
@@ -57,8 +55,9 @@
               color="indigo"
               large
               class="login-btn"
+              :loading="loading"
               @click="onSubmit"
-              :disabled="!valid"
+              :disabled="!valid || loading"
             >
               Create Account
             </v-btn>
@@ -84,13 +83,18 @@ export default {
       ],
       passwordRules: [
         (v) => !!v || 'Password is required',
-        (v) => v.length <= 6 || 'Name must be less than 6 characters',
+        (v) => v.length > 6 || 'Name must be less than 6 characters',
       ],
       confirmPasswordRules: [
         (v) => !!v || 'Confirm password is required',
         (v) => v === this.password || 'Passwords should match',
       ],
     };
+  },
+  computed: {
+    loading() {
+      return this.$store.getters.loading;
+    },
   },
   methods: {
     onSubmit() {
@@ -99,7 +103,11 @@ export default {
           email: this.email,
           password: this.password,
         };
-        console.log(user);
+        this.$store.dispatch('registerUser', user)
+          .then(() => {
+            this.$router.push('/');
+          })
+          .catch(() => {});
       }
     },
   },

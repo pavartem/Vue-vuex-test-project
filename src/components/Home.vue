@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div v-if="!loading">
     <v-container>
       <v-layout>
         <v-flex xs12>
           <v-carousel cycle hide-delimiter-background show-arrows-on-hover>
-            <v-carousel-item v-for="ad in ads" :key="ad.id" :src="ad.imageSrc">
+            <v-carousel-item v-for="ad in promoAds" :key="ad.id" :src="ad.imageSrc">
               <div class="car-link">
                 <v-btn class="indigo" :to="'/ad/' + ad.id">{{ad.title}}</v-btn>
               </div>
@@ -19,7 +19,7 @@
           xs12
           sm6
           md4
-          v-for="ad of ads"
+          v-for="ad of promoAds"
           :key="ad.id"
         >
           <v-card
@@ -48,36 +48,36 @@
       </v-layout>
     </v-container>
   </div>
+  <div v-else>
+    <v-container>
+      <v-layout row>
+        <v-flex xs12 class="text-center pt-5">
+          <v-progress-circular
+            indeterminate
+            :size="100"
+            :width="4"
+            color="indigo"
+          ></v-progress-circular>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </div>
 
 </template>
 
 <script>
 export default {
-  data: () => ({
-    ads: [
-      {
-        title: 'First ad',
-        description: 'Hello i am description',
-        promo: false,
-        imageSrc: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
-        id: '123',
-      },
-      {
-        title: 'Second ad',
-        description: 'Hello i am description',
-        promo: true,
-        imageSrc: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
-        id: '1234',
-      },
-      {
-        title: 'Third ad',
-        description: 'Hello i am description',
-        promo: true,
-        imageSrc: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
-        id: '12345',
-      },
-    ],
-  }),
+  computed: {
+    promoAds() {
+      return this.$store.getters.promoAds;
+    },
+    ads() {
+      return this.$store.getters.ads;
+    },
+    loading() {
+      return this.$store.getters.loading;
+    },
+  },
 };
 </script>
 
