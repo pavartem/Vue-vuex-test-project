@@ -14,13 +14,13 @@ new Vue({
   render: (h) => h(App),
   created() {
     fb.initializeApp({
-      apiKey: 'AIzaSyBWVCOsH_2qnmWZC_hdoazFF3IjBXiP4mY',
-      authDomain: 'minin-course.firebaseapp.com',
-      databaseURL: 'https://minin-course.firebaseio.com',
-      projectId: 'minin-course',
-      storageBucket: 'minin-course.appspot.com',
-      messagingSenderId: '862499393292',
-      appId: '1:862499393292:web:beaf66c995e1d4d7348329',
+      apiKey: process.env.VUE_APP_API_KEY,
+      authDomain: process.env.VUE_APP_AUTH_DOMAIN,
+      databaseURL: process.env.VUE_APP_DATABASE_URL,
+      projectId: process.env.VUE_APP_PROJECT_ID,
+      storageBucket: process.env.VUE_APP_STORAGE_BUCKET,
+      messagingSenderId: process.env.VUE_APP_SENDER_ID,
+      appId: process.env.VUE_APP_APP_ID,
     });
     fb.auth().onAuthStateChanged((user) => {
       if (user) {
