@@ -23,13 +23,6 @@
         </v-form>
         <v-layout row>
           <v-flex xs12>
-            <v-btn
-              color="indigo"
-              class="ma-2 white--text"
-            >
-              Upload
-              <v-icon right dark>mdi-cloud-upload</v-icon>
-            </v-btn>
             <v-spacer></v-spacer>
             <img src="" height="100" alt="">
             <v-switch
